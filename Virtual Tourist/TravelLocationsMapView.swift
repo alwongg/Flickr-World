@@ -187,6 +187,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     // Segue to PhotoAlbumViewController when pin is selected
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        mapView.delegate = self
+    
         imageDatas = [Data]()
         photos = [Photo]()
         lookForSelectedPin(view: view) { (selectedPin) in
@@ -214,4 +216,5 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         UserDefaults.standard.set(regionDictionary, forKey:"region")
         
     }
+
 }

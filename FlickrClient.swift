@@ -45,7 +45,6 @@ class FlickrClient: NSObject {
         
         // 4. Make the request
         
-        DispatchQueue.global(qos: .userInteractive).async {
             let task =  self.session.dataTask(with: request as URLRequest) { (data, response, error)  in
                 var arrayOfImageURLs = [String]()
                 var jsonObject: [String:AnyObject]
@@ -65,9 +64,9 @@ class FlickrClient: NSObject {
                                         arrayOfImageURLs.append(photoURL)
                                     }
                                 }
-                                DispatchQueue.main.async {
+                                
                                     handler(arrayOfImageURLs)
-                                }
+                                
                                 
                             }
                             
@@ -87,7 +86,8 @@ class FlickrClient: NSObject {
             task.resume()
             
         }
-    }
+    
+
     // MARK: Search By Latitude and Longitude
     
     func searchPinCoordinate(coordinate: CLLocationCoordinate2D, handler: @escaping (_ data: [String])-> Void) {

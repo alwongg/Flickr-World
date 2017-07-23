@@ -37,19 +37,17 @@ class FlickrClient: NSObject {
     
     // MARK: Task for GET method
     
-    func getFlickrImages(_ methodParameters: [String: AnyObject], handler: @escaping (_ arrayOfImageURLs: [String])-> Void) {
+    func getFlickrImages(_ method: [String: AnyObject], completionHandlerForGET: @escaping (_ imageURLArray: [String])-> Void) -> URLSessionDataTask{
         
-        // 2/3. Build the URL and configure the request
+        // 2/3. Build the URL, Configure the request
         
-        let request = URLRequest(url: flickrURLFromParameters(methodParameters))
+        let request = URLRequest(url: flickrURLFromParameters(method))
         
         // 4. Make the request
         
             let task =  self.session.dataTask(with: request as URLRequest) { (data, response, error)  in
                 var arrayOfImageURLs = [String]()
                 var jsonObject: [String:AnyObject]
-                
-                // Was there an error?
                 
                 if error == nil {
                     
@@ -64,12 +62,8 @@ class FlickrClient: NSObject {
                                         arrayOfImageURLs.append(photoURL)
                                     }
                                 }
-                                
-                                    handler(arrayOfImageURLs)
-                                
-                                
+                                    completionHandlerForGET(arrayOfImageURLs)
                             }
-                            
                         }
                     }
                     catch {
@@ -80,28 +74,30 @@ class FlickrClient: NSObject {
                     print(error!.localizedDescription)
                 }
             }
-            
+        
             // 7. Start the request
             
             task.resume()
-            
+            return task
         }
     
-
     // MARK: Search By Latitude and Longitude
     
     func searchPinCoordinate(coordinate: CLLocationCoordinate2D, handler: @escaping (_ data: [String])-> Void) {
         
         if (isValueInRange(coordinate.latitude, min: Constants.BoundingBox.BoundingBoxLatitudeRange.0, max: Constants.BoundingBox.BoundingBoxLatitudeRange.1) && isValueInRange(coordinate.longitude, min: Constants.BoundingBox.BoundingBoxLongitudeRange.0, max: Constants.BoundingBox.BoundingBoxLongitudeRange.1)) {
-            let methodParameters: [String: String] = [Constants.FlickrParameterKeys.Method:Constants.FlickrParameterValues.SearchMethod,
+            let methodParameters: [String: String] =
+                [Constants.FlickrParameterKeys.Method:Constants.FlickrParameterValues.SearchMethod,
                                                       Constants.FlickrParameterKeys.ApiKey:Constants.FlickrParameterValues.ApiKey,
-                                                      Constants.FlickrParameterKeys.BoundingBox: bboxValues(coordinate: coordinate),
-                                                      Constants.FlickrParameterKeys.SafeSearch:Constants.FlickrParameterValues.UseSafeSearch,
+                                        
+                                                      
                                                       Constants.FlickrParameterKeys.Extras:Constants.FlickrParameterValues.MediumURL,
                                                       Constants.FlickrParameterKeys.Format:Constants.FlickrParameterValues.ResponseFormat,
                                                       Constants.FlickrParameterKeys.NoJSONCallBack:Constants.FlickrParameterValues.DisableJSONCallBack,
-                                                      Constants.FlickrParameterKeys.Page: Constants.pageNumber(),
-                                                      Constants.FlickrParameterKeys.PerPage:Constants.FlickrParameterValues.NumberOfImagePerPage]
+                                                      Constants.FlickrParameterKeys.SafeSearch:Constants.FlickrParameterValues.UseSafeSearch,
+                                                      Constants.FlickrParameterKeys.BoundingBox: bboxValues(coordinate: coordinate),
+                                                      Constants.FlickrParameterKeys.PerPage:Constants.FlickrParameterValues.NumberOfImagePerPage,
+                                                      Constants.FlickrParameterKeys.Page: Constants.pageNumber()]
             
             getFlickrImages(methodParameters as [String: AnyObject]) { (data) in
                 DispatchQueue.main.async {
@@ -114,7 +110,7 @@ class FlickrClient: NSObject {
         }
     }
     
-    //MARK: Functions for search
+    // MARK: Functions for search
     
     func isValueInRange(_ value: Double, min: Double, max: Double) -> Bool {
         return !(value < min || value > max)

@@ -13,7 +13,7 @@ import UIKit
 
 struct Constants{
     
-    // MARK: Build Flickr API URL with Scheme, Host, Path
+    // MARK: Build Flickr URL
     
     struct Flickr {
         
@@ -87,6 +87,5 @@ struct Constants{
     static func pageNumber() -> String{
         let num = Int(arc4random_uniform(1000))
         return "\(num)"
-        
     }
 }

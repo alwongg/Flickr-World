@@ -29,13 +29,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        // Setup Long Press Gesture Recognizer
-        let longGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longGesturePressed))
-        
-        // Add Gesture to the mapView -> longGestureRecognizer
-        mapView.addGestureRecognizer(longGestureRecognizer)
-        longGestureRecognizer.minimumPressDuration = 0.5
+        configureMapView()
+        mapView.delegate = self
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +39,34 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    // MARK: Map Functions
+    // MARK: Add longPressGesture Recognizer to mapView
+    
+    func configureMapView(){
+        
+        let longGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnMap))
+        mapView.addGestureRecognizer(longGestureRecognizer)
+        longGestureRecognizer.minimumPressDuration = 0.5
+    }
+    
+    func longPressOnMap(gestureRecognizer: UILongPressGestureRecognizer) {
+        if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
+            let touchPoint = gestureRecognizer.location(in: mapView)
+            touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = touchCoordinate!
+            annotation.title = ""
+            // Add annotation to the mapView
+            mapView.addAnnotation(annotation)
+            
+            FlickrClient.sharedInstance().searchPinCoordinate(coordinate: touchCoordinate!) { (data) in
+                self.imageURLs = data
+                self.persistPinandPhoto(withCoordinate: self.touchCoordinate!)
+            }
+        }
+        
+    }
+    
+    // MARK: Update mapView on viewWillAppear method
     
     func updateMapSpan() {
         
@@ -80,26 +102,6 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // MARK: Guesture Function
-    
-    func longGesturePressed(gestureRecognizer: UILongPressGestureRecognizer) {
-        if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
-            let touchPoint = gestureRecognizer.location(in: mapView)
-            touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = touchCoordinate!
-            annotation.title = ""
-            // Add annotation to the mapView
-            mapView.addAnnotation(annotation)
-            
-            FlickrClient.sharedInstance().searchPinCoordinate(coordinate: touchCoordinate!) { (data) in
-                self.imageURLs = data
-                self.persistPinandPhoto(withCoordinate: self.touchCoordinate!)
-            }
-        }
-        
-    }
-    
     // MARK: Persist Functions
     
     func persistPinandPhoto(withCoordinate coordinate: CLLocationCoordinate2D)  {
@@ -132,15 +134,13 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                 }
                 
             }
-            
-            
-            
+
             if let pinCount = try? context.count(for: Pin.fetchRequest()) {
                 print("Pin Count: \(pinCount)")
             }
         }
-        
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             if (identifier == "showMapAndImages") {
@@ -151,7 +151,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    //MARK: MKMapViewDelegate
+    //MARK: MKMapViewDelegate mapView annotation methods
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseID = "pin"
@@ -160,35 +160,16 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             pinView!.canShowCallout = false
-            pinView!.pinTintColor = .red
+            pinView!.pinTintColor = .blue
             
         }
         
         return pinView
     }
-    func lookForSelectedPin (view: MKAnnotationView, handler: @escaping((Pin?) -> Void)) {
-        
-        let context = AppDelegate.viewContext
-        var selectedPin: Pin?
-        let request: NSFetchRequest<Pin> = Pin.fetchRequest()
-        if let result = try? context.fetch(request) {
-            for pin in result {
-                if (view.annotation?.coordinate.latitude == pin.latitude && view.annotation?.coordinate.longitude == pin.longitude) {
-                    selectedPin = pin
-                    break
-                }
-            }
-            handler(selectedPin)
-        }
-        
-        
-        
-    }
     
-    // Segue to PhotoAlbumViewController when pin is selected
+        // Segue to PhotoAlbumViewController when pin is selected
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        mapView.delegate = self
-    
+        
         imageDatas = [Data]()
         photos = [Photo]()
         lookForSelectedPin(view: view) { (selectedPin) in
@@ -211,10 +192,28 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
+    
+    func lookForSelectedPin (view: MKAnnotationView, handler: @escaping((Pin?) -> Void)) {
+        
+        let context = AppDelegate.viewContext
+        var selectedPin: Pin?
+        let request: NSFetchRequest<Pin> = Pin.fetchRequest()
+        if let result = try? context.fetch(request) {
+            for pin in result {
+                if (view.annotation?.coordinate.latitude == pin.latitude && view.annotation?.coordinate.longitude == pin.longitude) {
+                    selectedPin = pin
+                    break
+                }
+            }
+            handler(selectedPin)
+        }
+    }
+    
+    
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let regionDictionary: [String : Any] = ["latitude": mapView.region.center.latitude, "longitude": mapView.region.center.longitude, "spanLatitude": mapView.region.span.latitudeDelta, "spanLongitude": mapView.region.span.longitudeDelta ]
         UserDefaults.standard.set(regionDictionary, forKey:"region")
         
     }
-
+    
 }

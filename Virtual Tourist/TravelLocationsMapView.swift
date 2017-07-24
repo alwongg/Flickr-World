@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreData
+import Foundation
 
 class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
@@ -159,6 +160,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID) as? MKPinAnnotationView
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            
             pinView!.canShowCallout = false
             pinView!.pinTintColor = .blue
             
@@ -176,8 +178,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             if let pin = selectedPin {
                 self.pin = pin
                 let context = AppDelegate.viewContext
-                context.perform {
-                    
+                context.perform
+                    {
                     let predicate = NSPredicate(format: "myPin = %@", self.pin!)
                     let request: NSFetchRequest<Photo> = Photo.fetchRequest()
                     request.predicate = predicate
@@ -185,12 +187,20 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                         DispatchQueue.main.async {
                             self.photos = result
                             
-                            self.performSegue(withIdentifier: "showPhotoViewController", sender: self)
+                            self.segueToPhotoViewController()
+                            
+                            }
                         }
                     }
                 }
             }
         }
+    
+    
+    func segueToPhotoViewController(){
+        
+        let controller = storyboard!.instantiateViewController(withIdentifier: "photoVC")
+        present(controller, animated: true, completion: nil)
     }
     
     func lookForSelectedPin (view: MKAnnotationView, handler: @escaping((Pin?) -> Void)) {
@@ -215,5 +225,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         UserDefaults.standard.set(regionDictionary, forKey:"region")
         
     }
-    
+
 }
+    
+

@@ -71,6 +71,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     
     func setPinOnMapView() {
         
+        print("Pin function initiated")
         let coordinate = CLLocationCoordinate2D(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!)
         
         // Create annotation

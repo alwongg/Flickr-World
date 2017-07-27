@@ -186,7 +186,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                     if let result = try? context.fetch(request) {
                         DispatchQueue.main.async {
                             self.photos = result
-                            
+                          
                             self.segueToPhotoViewController()
                             
                             }
@@ -196,12 +196,13 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     
-    
     func segueToPhotoViewController(){
         
-        let controller = storyboard!.instantiateViewController(withIdentifier: "photoVC")
-        present(controller, animated: true, completion: nil)
+        let controller = storyboard!.instantiateViewController(withIdentifier: "photoVC") as? PhotoAlbumViewController
+        controller?.pin = pin
+        present(controller!, animated: true, completion: nil)
     }
+  
     
     func lookForSelectedPin (view: MKAnnotationView, handler: @escaping((Pin?) -> Void)) {
         

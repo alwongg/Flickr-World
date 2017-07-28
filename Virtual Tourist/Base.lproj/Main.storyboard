@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13168.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vYb-0Z-ckg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vYb-0Z-ckg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13147.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -56,13 +56,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="AUC-zo-1Qh">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="AUC-zo-1Qh">
                                 <rect key="frame" x="0.0" y="64" width="375" height="163"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="163" id="QeO-gV-k0Q"/>
+                                </constraints>
                             </mapView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RVY-GI-kFG">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RVY-GI-kFG">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="08E-FW-xKy"/>
                                     <barButtonItem title="New Collection" id="5GA-zQ-L8F">
@@ -73,9 +74,8 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EG4-Sa-o5E"/>
                                 </items>
                             </toolbar>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ntH-42-XLk">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ntH-42-XLk">
                                 <rect key="frame" x="0.0" y="225" width="375" height="398"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kZi-uB-qlj">
                                     <size key="itemSize" width="120" height="120"/>
@@ -91,20 +91,41 @@
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6wj-O0-qMb">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6wj-O0-qMb">
                                                     <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="6wj-O0-qMb" firstAttribute="leading" secondItem="o8x-8g-Msh" secondAttribute="leading" id="0ZD-bk-e3Y"/>
+                                            <constraint firstAttribute="trailing" secondItem="6wj-O0-qMb" secondAttribute="trailing" id="Pdx-7B-fDR"/>
+                                            <constraint firstItem="6wj-O0-qMb" firstAttribute="top" secondItem="o8x-8g-Msh" secondAttribute="top" id="aTD-Ob-qyH"/>
+                                            <constraint firstAttribute="bottom" secondItem="6wj-O0-qMb" secondAttribute="bottom" id="bXx-dm-L1Y"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="imageView" destination="6wj-O0-qMb" id="hD2-mg-w7r"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="dNU-uP-qBL" id="gvm-UM-aVQ"/>
+                                    <outlet property="delegate" destination="dNU-uP-qBL" id="mUR-8M-lEE"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ntH-42-XLk" firstAttribute="top" secondItem="A3a-Cf-Izq" secondAttribute="bottom" constant="161" id="5qR-41-5ye"/>
+                            <constraint firstItem="AUC-zo-1Qh" firstAttribute="trailing" secondItem="ntH-42-XLk" secondAttribute="trailing" id="68p-dM-N9m"/>
+                            <constraint firstItem="ntH-42-XLk" firstAttribute="trailing" secondItem="RVY-GI-kFG" secondAttribute="trailing" id="9H3-mR-tPQ"/>
+                            <constraint firstItem="AUC-zo-1Qh" firstAttribute="leading" secondItem="UHa-wZ-lMd" secondAttribute="leading" id="Rlg-vf-tKH"/>
+                            <constraint firstItem="AUC-zo-1Qh" firstAttribute="leading" secondItem="ntH-42-XLk" secondAttribute="leading" id="T66-Kl-z1v"/>
+                            <constraint firstItem="RVY-GI-kFG" firstAttribute="bottom" secondItem="8vj-JN-MmN" secondAttribute="top" id="WUQ-pv-5Mu"/>
+                            <constraint firstAttribute="trailing" secondItem="AUC-zo-1Qh" secondAttribute="trailing" id="Wfh-9F-lqe"/>
+                            <constraint firstItem="AUC-zo-1Qh" firstAttribute="top" secondItem="A3a-Cf-Izq" secondAttribute="bottom" id="Y8u-Jh-s0l"/>
+                            <constraint firstItem="RVY-GI-kFG" firstAttribute="top" secondItem="ntH-42-XLk" secondAttribute="bottom" id="Yp9-di-ptO"/>
+                            <constraint firstItem="ntH-42-XLk" firstAttribute="leading" secondItem="RVY-GI-kFG" secondAttribute="leading" id="zbs-MC-nWL"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Photo Collection" id="mK0-18-JwU"/>
                     <connections>

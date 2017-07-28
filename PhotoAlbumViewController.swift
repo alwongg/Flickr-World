@@ -14,7 +14,7 @@ import CoreImage
 
 private let reuseIdentifier = "ImageCell"
 
-class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class PhotoAlbumViewController: UIViewController {
     
     // MARK: Properties
     
@@ -30,7 +30,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     
     // MARK: Actions
     
-    @IBAction func refreshCollection(_ sender: Any) {
+    @IBAction func refreshCollection(_ sender: UIBarButtonItem) {
         let coordinate = CLLocationCoordinate2D(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!)
         for i in 0..<photos!.count {
             if let photo = photos?[i] {
@@ -92,12 +92,13 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         
     }
     
+
+}
+
+extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+
+
     // MARK: UICollectionView setup with DataSource and Delegate
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (photos?.count)!
@@ -168,7 +169,5 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             
         }
     }
-    
-    
-    
+
 }

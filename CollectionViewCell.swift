@@ -13,7 +13,7 @@ class CollectionViewCell: UICollectionViewCell{
     
     // MARK: Outlets
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet var imageView: UIImageView!
     var imageURLString: String? 
     
 }

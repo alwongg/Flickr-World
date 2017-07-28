@@ -14,7 +14,7 @@ import CoreImage
 
 private let reuseIdentifier = "ImageCell"
 
-class PhotoAlbumViewController: UIViewController {
+class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     // MARK: Properties
     
@@ -38,6 +38,7 @@ class PhotoAlbumViewController: UIViewController {
             }
         }
         
+        
         appDelegate?.saveContext()
         photos = [Photo]()
         
@@ -59,46 +60,6 @@ class PhotoAlbumViewController: UIViewController {
         
     }
     
-    // MARK: Life Cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setPinOnMapView()
-        
-    }
-    
-    // MARK: Pin Function
-    
-    func setPinOnMapView() {
-        
-        print("Pin function initiated")
-        let coordinate = CLLocationCoordinate2D(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!)
-        
-        // Create annotation
-        let annotation = MKPointAnnotation()
-        
-        // Set coordinate to annotation
-        annotation.coordinate = coordinate
-        annotation.title = ""
-        mapView.addAnnotation(annotation)
-        
-        let spanX = 2.0
-        let spanY = 2.0
-        var region = MKCoordinateRegion()
-        region.center.latitude = (pin?.latitude)!
-        region.center.longitude = (pin?.longitude)!
-        region.span = MKCoordinateSpanMake(spanX, spanY)
-        mapView.setRegion(region, animated: true)
-        
-    }
-    
-
-}
-
-extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-
-
-    // MARK: UICollectionView setup with DataSource and Delegate
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (photos?.count)!
@@ -109,7 +70,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         if let imageCell = cell as? CollectionViewCell {
             
-            if let photoArray = photos, (photos?.count)! > 0 {
+            if let photoArray = photos, photos?.count != 0 {
                 if (indexPath.row < photoArray.count) {
                     if (photoArray[indexPath.row].image == nil) {
                         DispatchQueue.global(qos: .userInteractive).async {
@@ -169,5 +130,44 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             
         }
     }
-
+    
+    
+    
+    // MARK: Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setPinOnMapView()
+        
+    }
+    
+    // MARK: Pin Function
+    
+    func setPinOnMapView() {
+        
+        print("Pin function initiated")
+        let coordinate = CLLocationCoordinate2D(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!)
+        
+        // Create annotation
+        let annotation = MKPointAnnotation()
+        
+        // Set coordinate to annotation
+        annotation.coordinate = coordinate
+        annotation.title = ""
+        mapView.addAnnotation(annotation)
+        
+        let spanX = 2.0
+        let spanY = 2.0
+        var region = MKCoordinateRegion()
+        region.center.latitude = (pin?.latitude)!
+        region.center.longitude = (pin?.longitude)!
+        region.span = MKCoordinateSpanMake(spanX, spanY)
+        mapView.setRegion(region, animated: true)
+        
+    }
+    
+    
 }
+
+
+

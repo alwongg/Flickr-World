@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import UIKit
 
 class Pin: NSManagedObject {
     convenience init(context: NSManagedObjectContext, latitude: Double, longitude: Double) {

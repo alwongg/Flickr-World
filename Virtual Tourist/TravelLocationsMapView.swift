@@ -144,7 +144,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
-            if (identifier == "showMapAndImages") {
+            if (identifier == "showPhotoViewController") {
                 let photoAndMapVC = segue.destination as? PhotoAlbumViewController
                 photoAndMapVC?.pin = pin
                 photoAndMapVC?.photos = photos
@@ -187,7 +187,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                         DispatchQueue.main.async {
                             self.photos = result
                           
-                            self.segueToPhotoViewController()
+                            self.performSegue(withIdentifier: "showPhotoViewController", sender: self)
                             
                             }
                         }
@@ -195,13 +195,6 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                 }
             }
         }
-    
-    func segueToPhotoViewController(){
-        
-        let controller = storyboard!.instantiateViewController(withIdentifier: "photoVC") as? PhotoAlbumViewController
-        controller?.pin = pin
-        present(controller!, animated: true, completion: nil)
-    }
   
     
     func lookForSelectedPin (view: MKAnnotationView, handler: @escaping((Pin?) -> Void)) {
@@ -222,8 +215,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        let regionDictionary: [String : Any] = ["latitude": mapView.region.center.latitude, "longitude": mapView.region.center.longitude, "spanLatitude": mapView.region.span.latitudeDelta, "spanLongitude": mapView.region.span.longitudeDelta ]
-        UserDefaults.standard.set(regionDictionary, forKey:"region")
+        let regionSpanDictionary: [String : Any] = ["latitude": mapView.region.center.latitude, "longitude": mapView.region.center.longitude, "spanLatitude": mapView.region.span.latitudeDelta, "spanLongitude": mapView.region.span.longitudeDelta ]
+        UserDefaults.standard.set(regionSpanDictionary, forKey:"region")
         
     }
 

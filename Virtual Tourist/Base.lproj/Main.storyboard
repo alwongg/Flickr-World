@@ -47,7 +47,7 @@
         <!--Photo Collection-->
         <scene sceneID="Gl0-8X-dEu">
             <objects>
-                <viewController storyboardIdentifier="photoVC" id="dNU-uP-qBL" customClass="PhotoAlbumViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Photo Collection" id="dNU-uP-qBL" customClass="PhotoAlbumViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="A3a-Cf-Izq"/>
                         <viewControllerLayoutGuide type="bottom" id="8vj-JN-MmN"/>

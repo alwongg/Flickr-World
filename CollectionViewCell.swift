@@ -14,6 +14,4 @@ class CollectionViewCell: UICollectionViewCell{
     // MARK: Outlets
     
     @IBOutlet var imageView: UIImageView!
-    var imageURLString: String? 
-    
 }

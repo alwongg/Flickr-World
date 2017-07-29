@@ -11,7 +11,7 @@ import MapKit
 import CoreData
 import Foundation
 
-class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
+class TravelLocationsMapViewController: UIViewController {
     
     // MARK: Properties
     
@@ -40,8 +40,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    // MARK: Add longPressGesture Recognizer to mapView
+    // MARK: Config MapView Gestures
     
+    // Add Long Press Gesture to mapView on load
     func configureMapView(){
         
         let longGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnMap))
@@ -49,6 +50,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         longGestureRecognizer.minimumPressDuration = 0.5
     }
     
+    // Set Gesture as Long Press
     func longPressOnMap(gestureRecognizer: UILongPressGestureRecognizer) {
         if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
             let touchPoint = gestureRecognizer.location(in: mapView)
@@ -56,15 +58,16 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             let annotation = MKPointAnnotation()
             annotation.coordinate = touchCoordinate!
             annotation.title = ""
+            
             // Add annotation to the mapView
             mapView.addAnnotation(annotation)
             
+            // Call search method from FlickrClient
             FlickrClient.sharedInstance().searchPinCoordinate(coordinate: touchCoordinate!) { (data) in
                 self.imageURLs = data
-                self.persistPinandPhoto(withCoordinate: self.touchCoordinate!)
+                self.persistenceOfPinAndPhoto(withCoordinate: self.touchCoordinate!)
             }
         }
-        
     }
     
     // MARK: Update mapView on viewWillAppear method
@@ -105,7 +108,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: Persist Functions
     
-    func persistPinandPhoto(withCoordinate coordinate: CLLocationCoordinate2D)  {
+    func persistenceOfPinAndPhoto(withCoordinate coordinate: CLLocationCoordinate2D)  {
         
         AppDelegate.persistentContainer.performBackgroundTask{ context in
             let pinEntity = Pin(context: context, latitude: coordinate.latitude, longitude: coordinate.longitude)
@@ -120,106 +123,19 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             try? context.save()
             self.imageURLs?.removeAll()
         }
-        
     }
-    func printDatabaseStatistic() {
-        let context = AppDelegate.viewContext
-        context.perform {
-            
-            let request: NSFetchRequest<Photo> = Photo.fetchRequest()
-            
-            if let result = try? context.fetch(request) {
-                print("Photo Count: \(result.count)")
-                for photo in result {
-                    print("Photo.url: \(String(describing: photo.url))")
-                }
-                
-            }
-
-            if let pinCount = try? context.count(for: Pin.fetchRequest()) {
-                print("Pin Count: \(pinCount)")
-            }
-        }
-    }
+    
+    // MARK: Segue Method
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             if (identifier == "showPhotoViewController") {
-                let photoAndMapVC = segue.destination as? PhotoAlbumViewController
-                photoAndMapVC?.pin = pin
-                photoAndMapVC?.photos = photos
+                let mapAndPhotoViewController = segue.destination as? PhotoAlbumViewController
+                mapAndPhotoViewController?.pin = pin
+                mapAndPhotoViewController?.photos = photos
             }
         }
     }
-    
-    //MARK: MKMapViewDelegate mapView annotation methods
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let reuseID = "pin"
-        
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID) as? MKPinAnnotationView
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
-            
-            pinView!.canShowCallout = false
-            pinView!.pinTintColor = .blue
-            
-        }
-        
-        return pinView
-    }
-    
-        // Segue to PhotoAlbumViewController when pin is selected
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
-        imageDatas = [Data]()
-        photos = [Photo]()
-        lookForSelectedPin(view: view) { (selectedPin) in
-            if let pin = selectedPin {
-                self.pin = pin
-                let context = AppDelegate.viewContext
-                context.perform
-                    {
-                    let predicate = NSPredicate(format: "myPin = %@", self.pin!)
-                    let request: NSFetchRequest<Photo> = Photo.fetchRequest()
-                    request.predicate = predicate
-                    if let result = try? context.fetch(request) {
-                        DispatchQueue.main.async {
-                            self.photos = result
-                          
-                            self.performSegue(withIdentifier: "showPhotoViewController", sender: self)
-                            
-                            }
-                        }
-                    }
-                }
-            }
-        }
-  
-    
-    func lookForSelectedPin (view: MKAnnotationView, handler: @escaping((Pin?) -> Void)) {
-        
-        let context = AppDelegate.viewContext
-        var selectedPin: Pin?
-        let request: NSFetchRequest<Pin> = Pin.fetchRequest()
-        if let result = try? context.fetch(request) {
-            for pin in result {
-                if (view.annotation?.coordinate.latitude == pin.latitude && view.annotation?.coordinate.longitude == pin.longitude) {
-                    selectedPin = pin
-                    break
-                }
-            }
-            handler(selectedPin)
-        }
-    }
-    
-    
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        let regionSpanDictionary: [String : Any] = ["latitude": mapView.region.center.latitude, "longitude": mapView.region.center.longitude, "spanLatitude": mapView.region.span.latitudeDelta, "spanLongitude": mapView.region.span.longitudeDelta ]
-        UserDefaults.standard.set(regionSpanDictionary, forKey:"region")
-        
-    }
-
 }
-    
+
 

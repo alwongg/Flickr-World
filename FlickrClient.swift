@@ -20,36 +20,31 @@ class FlickrClient: NSObject {
     // MARK: Initializer
     
     override init() {
-        
         super.init()
     }
     
     // MARK: Shared Instance
     
     class func sharedInstance() -> FlickrClient {
-        
         struct Singleton {
             static var sharedInstance = FlickrClient()
         }
-        
         return Singleton.sharedInstance
     }
     
     // MARK: Task for GET method
     
-    func getFlickrImages(_ methodParameters: [String: AnyObject], handler: @escaping (_ arrayOfImageURLs: [String])-> Void) {
+    func getFlickrImages(_ method: [String: AnyObject], completionHandler: @escaping (_ arrayOfImageURLs: [String])-> Void) {
         
-        // TODO: Make request to Flickr!
+        let request = URLRequest(url: flickrURLFromParameters(method))
         
-        let session = URLSession.shared
-        let request = URLRequest(url: flickrURLFromParameters(methodParameters))
         DispatchQueue.global(qos: .userInteractive).async {
-            let task =  session.dataTask(with: request) { (data, response, error)  in
+            let task =  self.session.dataTask(with: request) { (data, response, error)  in
                 var arrayOfImageURLs = [String]()
                 var jsonObject: [String:AnyObject]
                 if error == nil {
                     do {
-                        jsonObject = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                        jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
                         if let photosObject = jsonObject["photos"] as? [String: AnyObject] {
                             if let photoArray = photosObject["photo"] as? [AnyObject] {
                                 for photo in photoArray {
@@ -58,15 +53,13 @@ class FlickrClient: NSObject {
                                     }
                                 }
                                 DispatchQueue.main.async {
-                                    handler(arrayOfImageURLs)
+                                    completionHandler(arrayOfImageURLs)
                                 }
-                                
                             }
-                            
                         }
                     }
                     catch {
-                        print("Could not parse data as JSON")
+                        print("Cannot parse data")
                     }
                 }
                 else {
@@ -74,19 +67,22 @@ class FlickrClient: NSObject {
                 }
             }
             task.resume()
-            
         }
     }
-    // MARK: Search By Latitude and Longitude
     
-    func searchPinCoordinate(coordinate: CLLocationCoordinate2D, handler: @escaping (_ data: [String])-> Void) {
+    // MARK: Flickr Search Method
+    
+    func searchPinCoordinate(coordinate: CLLocationCoordinate2D, completionHandler: @escaping (_ data: [String])-> Void) {
         
-        if (isValueInRange(coordinate.latitude, min: Constants.BoundingBox.BoundingBoxLatitudeRange.0, max: Constants.BoundingBox.BoundingBoxLatitudeRange.1) && isValueInRange(coordinate.longitude, min: Constants.BoundingBox.BoundingBoxLongitudeRange.0, max: Constants.BoundingBox.BoundingBoxLongitudeRange.1)) {
-            let methodParameters: [String: String] =
+        if isValueInRange(coordinate.latitude,
+                          min: Constants.BoundingBox.BoundingBoxLatitudeRange.0,
+                          max: Constants.BoundingBox.BoundingBoxLatitudeRange.1)
+            && isValueInRange(coordinate.longitude,
+                              min: Constants.BoundingBox.BoundingBoxLongitudeRange.0,
+                              max: Constants.BoundingBox.BoundingBoxLongitudeRange.1){
+            let method: [String: String] =
                 [Constants.FlickrParameterKeys.Method:Constants.FlickrParameterValues.SearchMethod,
                  Constants.FlickrParameterKeys.ApiKey:Constants.FlickrParameterValues.ApiKey,
-                 
-                 
                  Constants.FlickrParameterKeys.Extras:Constants.FlickrParameterValues.MediumURL,
                  Constants.FlickrParameterKeys.Format:Constants.FlickrParameterValues.ResponseFormat,
                  Constants.FlickrParameterKeys.NoJSONCallBack:Constants.FlickrParameterValues.DisableJSONCallBack,
@@ -95,10 +91,10 @@ class FlickrClient: NSObject {
                  Constants.FlickrParameterKeys.PerPage:Constants.FlickrParameterValues.NumberOfImagePerPage,
                  Constants.FlickrParameterKeys.Page: Constants.pageNumber()]
             
-            
-            getFlickrImages(methodParameters as [String: AnyObject]) { (data) in
+            // Download Flickr Images with the GET method
+            getFlickrImages(method as [String: AnyObject]) { (data) in
                 DispatchQueue.main.async {
-                    handler(data)
+                    completionHandler(data)
                 }
             }
         }
@@ -107,12 +103,12 @@ class FlickrClient: NSObject {
         }
     }
     
-    
-    // MARK: Functions for search
+    // MARK: Methods for Flickr Search
     
     func isValueInRange(_ value: Double, min: Double, max: Double) -> Bool {
         return !(value < min || value > max)
     }
+    
     func bboxValues(coordinate: CLLocationCoordinate2D) -> String {
         
         var latMin = 0.0
@@ -137,7 +133,7 @@ class FlickrClient: NSObject {
         return "\(lonMin),\(latMin),\(lonMax),\(latMax)"
     }
     
-    // Create a url from parameters
+    // MARK: Create a url from parameters
     
     private func flickrURLFromParameters(_ parameters: [String: AnyObject]?, withPathExtension: String? = nil) -> URL {
         
@@ -151,7 +147,6 @@ class FlickrClient: NSObject {
             let queryItem = URLQueryItem(name: key, value: "\(value)")
             components.queryItems!.append(queryItem)
         }
-        
         return components.url!
     }
 }

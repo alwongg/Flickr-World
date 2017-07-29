@@ -17,11 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var persistentContainer: NSPersistentContainer {
         return  ((UIApplication.shared.delegate as? AppDelegate)?.persistentContainer)!
     }
+    
     static var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
     
-    // MARK: - Core Data stack - Persistent Container
+    // MARK: Core Data stack - Persistent Container
     
     lazy var persistentContainer: NSPersistentContainer = {
         
@@ -34,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
     
-    // MARK: - Core Data Save Method
+    // MARK: Core Data Save Method
     
     func saveContext() {
         let context = persistentContainer.viewContext
@@ -47,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    
     // MARK: Original App Delegate Boiler Plate Code
     
     var window: UIWindow?
@@ -79,5 +80,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    }
+}
 

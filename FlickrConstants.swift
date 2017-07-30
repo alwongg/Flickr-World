@@ -81,11 +81,11 @@ struct Constants{
     struct FlickrResponseValues {
         static let OKStatus = "ok"
     }
-    
     // MARK: Return random page number
     
     static func pageNumber() -> String{
         let num = Int(arc4random_uniform(1000))
         return "\(num)"
     }
+    
 }

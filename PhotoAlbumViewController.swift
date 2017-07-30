@@ -25,6 +25,14 @@ class PhotoAlbumViewController: UIViewController{
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var mapView: MKMapView!
     
+    // MARK: Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setPinOnMapView()
+        
+    }
+    
     // MARK: Actions
     
     @IBAction func refreshCollection(_ sender: UIBarButtonItem) {
@@ -51,15 +59,7 @@ class PhotoAlbumViewController: UIViewController{
             }
         }
     }
-    
-    // MARK: Life Cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setPinOnMapView()
-        
-    }
-    
+
     // MARK: Pin Function
     
     func setPinOnMapView() {

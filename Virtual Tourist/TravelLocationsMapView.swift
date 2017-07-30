@@ -52,7 +52,7 @@ class TravelLocationsMapViewController: UIViewController {
     
     // Set Gesture as Long Press
     func longPressOnMap(gestureRecognizer: UILongPressGestureRecognizer) {
-        if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
+        if (gestureRecognizer.state == UIGestureRecognizerState.began) {
             let touchPoint = gestureRecognizer.location(in: mapView)
             touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
             let annotation = MKPointAnnotation()

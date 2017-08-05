@@ -1,8 +1,8 @@
 //
-//  PhotoCollectionExtension.swift
-//  Virtual Tourist
+//  PhotoAlbumExtension.swift
+//  Virtual Tourist2.0
 //
-//  Created by Alex Wong on 7/28/17.
+//  Created by Alex Wong on 8/4/17.
 //  Copyright © 2017 Alex Wong. All rights reserved.
 //
 
@@ -19,7 +19,6 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     // MARK: CollectionViewDelegate and DataSource Methods
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
@@ -76,7 +75,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell{
+        if (collectionView.cellForItem(at: indexPath) as? CollectionViewCell) != nil{
             
             if let photo = photos?.remove(at: indexPath.row){
                 DispatchQueue.main.async {

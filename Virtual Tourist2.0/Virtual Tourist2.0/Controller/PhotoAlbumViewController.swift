@@ -1,8 +1,8 @@
 //
-//  PhotoAlbumViewController.swift
-//  Virtual Tourist
+//  PhotoViewController.swift
+//  Virtual Tourist2.0
 //
-//  Created by Alex Wong on 7/17/17.
+//  Created by Alex Wong on 8/4/17.
 //  Copyright © 2017 Alex Wong. All rights reserved.
 //
 
@@ -35,14 +35,14 @@ class PhotoAlbumViewController: UIViewController{
     
     // MARK: Actions
     
-    @IBAction func refreshCollection(_ sender: UIBarButtonItem) {
+    @IBAction func newCollection(_ sender: Any) {
         let coordinate = CLLocationCoordinate2D(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!)
         for i in 0..<photos!.count {
             if let photo = photos?[i] {
                 AppDelegate.viewContext.delete(photo)
             }
         }
-
+        
         appDelegate.saveContext()
         photos = [Photo]()
         
@@ -59,7 +59,7 @@ class PhotoAlbumViewController: UIViewController{
             }
         }
     }
-
+    
     // MARK: Pin Function
     
     func setPinOnMapView() {

@@ -1,8 +1,8 @@
 //
 //  TravelLocationsMapViewController.swift
-//  Virtual Tourist
+//  Virtual Tourist2.0
 //
-//  Created by Alex Wong on 7/16/17.
+//  Created by Alex Wong on 8/4/17.
 //  Copyright © 2017 Alex Wong. All rights reserved.
 //
 
@@ -53,7 +53,7 @@ class TravelLocationsMapViewController: UIViewController {
     }
     
     // Set Gesture as Long Press
-    func longPressOnMap(gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func longPressOnMap(gestureRecognizer: UILongPressGestureRecognizer) {
         if (gestureRecognizer.state == UIGestureRecognizerState.began) {
             let touchPoint = gestureRecognizer.location(in: mapView)
             touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
@@ -112,7 +112,8 @@ class TravelLocationsMapViewController: UIViewController {
     
     func persistenceOfPinAndPhoto(withCoordinate coordinate: CLLocationCoordinate2D)  {
         
-        AppDelegate.persistentContainer.performBackgroundTask{ context in
+        AppDelegate.persistentContainer.performBackgroundTask{
+            context in
             let pinEntity = Pin(context: context, latitude: coordinate.latitude, longitude: coordinate.longitude)
             if let imageURLs = self.imageURLs {
                 
@@ -123,6 +124,7 @@ class TravelLocationsMapViewController: UIViewController {
             }
             try? context.save()
             self.imageURLs?.removeAll()
+            
         }
     }
     
@@ -130,7 +132,7 @@ class TravelLocationsMapViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
-            if (identifier == "showPhotoViewController") {
+            if (identifier == "showCollectionView") {
                 let mapAndPhotoViewController = segue.destination as? PhotoAlbumViewController
                 mapAndPhotoViewController?.pin = pin
                 mapAndPhotoViewController?.photos = photos
@@ -138,5 +140,4 @@ class TravelLocationsMapViewController: UIViewController {
         }
     }
 }
-
 

@@ -13,7 +13,7 @@ import Foundation
 
 class TravelLocationsMapViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     var imageURLs: [String]?
     var photos: [Photo]?
@@ -23,17 +23,16 @@ class TravelLocationsMapViewController: UIViewController {
     let context = AppDelegate.viewContext
     
     
-    // MARK: Outlets
+    // MARK: - Outlets
     
     @IBOutlet weak var mapView: MKMapView!
     
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         configureMapView()
-        mapView.delegate = self
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +41,7 @@ class TravelLocationsMapViewController: UIViewController {
         
     }
     
-    // MARK: Config MapView Gestures
+    // MARK: - Config MapView Gestures
     
     // Add Long Press Gesture to mapView on load
     func configureMapView(){
@@ -72,7 +71,7 @@ class TravelLocationsMapViewController: UIViewController {
         }
     }
     
-    // MARK: Update mapView on viewWillAppear method
+    // MARK: - Update mapView on viewWillAppear method
     
     func updateMapSpan() {
         
@@ -108,7 +107,7 @@ class TravelLocationsMapViewController: UIViewController {
         }
     }
     
-    // MARK: Persist Functions
+    // MARK: - Persist Functions
     
     func persistenceOfPinAndPhoto(withCoordinate coordinate: CLLocationCoordinate2D)  {
         
@@ -128,7 +127,7 @@ class TravelLocationsMapViewController: UIViewController {
         }
     }
     
-    // MARK: Segue Method
+    // MARK: - Segue Method
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {

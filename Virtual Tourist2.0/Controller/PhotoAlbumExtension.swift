@@ -16,11 +16,7 @@ private let reuseIdentifier = "ImageCell"
 
 extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
-    // MARK: CollectionViewDelegate and DataSource Methods
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
+    // MARK: - CollectionViewDelegate and DataSource Methods
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (photos?.count)!
@@ -37,7 +33,6 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
                         DispatchQueue.global(qos: .userInteractive).async {
                             let currentPhoto = photoArray[indexPath.row]
                             
-                            AppDelegate.viewContext.perform {
                                 if let photoURL = currentPhoto.url {
                                     if let url = URL(string: photoURL) {
                                         do {
@@ -58,7 +53,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
                                 }else {
                                     print("No URL or invalid")
                                 }
-                            }
+                            
                         }
                     }
                     else {

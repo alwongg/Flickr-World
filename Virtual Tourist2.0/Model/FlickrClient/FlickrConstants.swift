@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-// MARK: FlickrConstants
+// MARK: - FlickrConstants
 
 struct Constants{
     
-    // MARK: Build Flickr URL
+    // MARK: - Build Flickr URL
     
     struct Flickr {
         
@@ -23,7 +23,7 @@ struct Constants{
         
     }
     
-    // MARK: Search Bounding Box
+    // MARK: - Search Bounding Box
     // 4 values that define the search area
     
     struct BoundingBox {
@@ -34,7 +34,7 @@ struct Constants{
         
     }
     
-    // MARK: Flickr Parameter Keys
+    // MARK: - Flickr Parameter Keys
     
     struct FlickrParameterKeys{
         static let Method = "method"
@@ -50,7 +50,7 @@ struct Constants{
         static let Page = "page"
     }
     
-    // MARK: Flickr Parameter Values
+    // MARK: - Flickr Parameter Values
     
     struct FlickrParameterValues {
         static let SearchMethod = "flickr.photos.search"
@@ -64,7 +64,7 @@ struct Constants{
         static let NumberOfImagePerPage = "21"
     }
     
-    // MARK: Flickr Response Keys
+    // MARK: - Flickr Response Keys
     
     struct FlickrResponseKeys {
         static let Status = "stat"
@@ -76,7 +76,7 @@ struct Constants{
         static let Total = "total"
     }
     
-    // MARK: Flickr Response Values
+    // MARK: - Flickr Response Values
     
     struct FlickrResponseValues {
         static let OKStatus = "ok"

@@ -14,18 +14,18 @@ import CoreImage
 
 class PhotoAlbumViewController: UIViewController{
     
-    // MARK: Properties
+    // MARK: - Properties
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var photos: [Photo]?
     var pin: Pin?
     
-    // MARK: Outlets
+    // MARK: - Outlets
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var mapView: MKMapView!
     
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class PhotoAlbumViewController: UIViewController{
         
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     @IBAction func newCollection(_ sender: Any) {
         let coordinate = CLLocationCoordinate2D(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!)
@@ -60,7 +60,7 @@ class PhotoAlbumViewController: UIViewController{
         }
     }
     
-    // MARK: Pin Function
+    // MARK: - Pin Function
     
     func setPinOnMapView() {
         

@@ -9,21 +9,21 @@
 import Foundation
 import MapKit
 
-// MARK: FlickrClient: NSObject
+// MARK: - FlickrClient: NSObject
 
 class FlickrClient: NSObject {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     var session = URLSession.shared
     
-    // MARK: Initializer
+    // MARK: - Initializer
     
     override init() {
         super.init()
     }
     
-    // MARK: Shared Instance
+    // MARK: - Shared Instance
     
     class func sharedInstance() -> FlickrClient {
         struct Singleton {
@@ -32,7 +32,7 @@ class FlickrClient: NSObject {
         return Singleton.sharedInstance
     }
     
-    // MARK: Task for GET method
+    // MARK: - Task for GET method
     
     func getFlickrImages(_ method: [String: AnyObject], completionHandler: @escaping (_ arrayOfImageURLs: [String])-> Void) {
         
@@ -70,7 +70,7 @@ class FlickrClient: NSObject {
         }
     }
     
-    // MARK: Flickr Search Method
+    // MARK: - Flickr Search Method
     
     func searchPinCoordinate(coordinate: CLLocationCoordinate2D, completionHandler: @escaping (_ data: [String])-> Void) {
         
@@ -88,7 +88,8 @@ class FlickrClient: NSObject {
                  Constants.FlickrParameterKeys.NoJSONCallBack:Constants.FlickrParameterValues.DisableJSONCallBack,
                  Constants.FlickrParameterKeys.SafeSearch:Constants.FlickrParameterValues.UseSafeSearch,
                  Constants.FlickrParameterKeys.BoundingBox: bboxValues(coordinate: coordinate),
-                 Constants.FlickrParameterKeys.PerPage:Constants.FlickrParameterValues.NumberOfImagePerPage]
+                 Constants.FlickrParameterKeys.PerPage:Constants.FlickrParameterValues.NumberOfImagePerPage,
+                 Constants.FlickrParameterKeys.Page:pageNumber()]
             
             // Download Flickr Images with the GET method
             getFlickrImages(method as [String: AnyObject]) { (data) in
@@ -102,7 +103,12 @@ class FlickrClient: NSObject {
         }
     }
     
-    // MARK: Methods for Flickr Search
+    func pageNumber() -> String {
+        var num = Int(arc4random_uniform(1000))
+        return "\(num)"
+    }
+    
+    // MARK: - Methods for Flickr Search
     
     func isValueInRange(_ value: Double, min: Double, max: Double) -> Bool {
         return !(value < min || value > max)
@@ -132,7 +138,7 @@ class FlickrClient: NSObject {
         return "\(lonMin),\(latMin),\(lonMax),\(latMax)"
     }
     
-    // MARK: Create a url from parameters
+    // MARK: - Create a url from parameters
     
     private func flickrURLFromParameters(_ parameters: [String: AnyObject]?, withPathExtension: String? = nil) -> URL {
         

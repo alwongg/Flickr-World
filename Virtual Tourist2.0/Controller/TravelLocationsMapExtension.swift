@@ -13,7 +13,7 @@ import CoreData
 
 extension TravelLocationsMapViewController: MKMapViewDelegate{
     
-    // MARK: MKMapViewDelegate Methods
+    // MARK: - MKMapViewDelegate Methods
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseID = "pin"

@@ -26,6 +26,8 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         if let imageCell = cell as? CollectionViewCell {
             
+            imageCell.imageView.image = UIImage(named: "Placeholder")
+            
             if let photoArray = photos, photos?.count != 0 {
                 if (indexPath.row < photoArray.count) {
                     if (photoArray[indexPath.row].image == nil) {

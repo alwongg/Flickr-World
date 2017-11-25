@@ -13,6 +13,7 @@
 		FA00B6621FCA024100E46A1E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA00B6601FCA024100E46A1E /* Main.storyboard */; };
 		FA00B6641FCA024100E46A1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA00B6631FCA024100E46A1E /* Assets.xcassets */; };
 		FA00B6671FCA024100E46A1E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA00B6651FCA024100E46A1E /* LaunchScreen.storyboard */; };
+		FA00B6741FCA256200E46A1E /* DroppablePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00B6731FCA256200E46A1E /* DroppablePin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		FA00B6631FCA024100E46A1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA00B6661FCA024100E46A1E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA00B6681FCA024100E46A1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA00B6731FCA256200E46A1E /* DroppablePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppablePin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 		FA00B66F1FCA02F400E46A1E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FA00B6731FCA256200E46A1E /* DroppablePin.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA00B65F1FCA024100E46A1E /* MapVC.swift in Sources */,
+				FA00B6741FCA256200E46A1E /* DroppablePin.swift in Sources */,
 				FA00B65D1FCA024100E46A1E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +395,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DZAV3VM24;
 				INFOPLIST_FILE = "Flickr World/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alwongg.Flickr-World";
@@ -406,6 +411,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DZAV3VM24;
 				INFOPLIST_FILE = "Flickr World/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alwongg.Flickr-World";

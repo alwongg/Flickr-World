@@ -27,6 +27,8 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     var spinner: UIActivityIndicatorView?
     var progressLabel: UILabel?
+    var collectionView: UICollectionView?
+    var flowLayout = UICollectionViewFlowLayout() //need for programmatic collectionview
     
     // MARK: - View Lifecycle
     
@@ -45,6 +47,17 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         
         //allow doubleTap function at load
         addDoubleTap()
+        
+        //collectionView
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
+        collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
+        
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        
+        collectionView?.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        
+        pullUpView.addSubview(collectionView!)
     }
     
     // MARK: - DoubleTap
@@ -63,10 +76,15 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     @objc func dropPin(sender: UITapGestureRecognizer){
         
         //update UI
-        removePin()
         animateViewUp()
+        
+        removePin()
+        removeSpinner()
+        removeProgressLabel()
+        
         addSwipe()
         addSpinner()
+        addProgressLabel()
         
         //touchPoint = point on phone screen in (x,y)
         let touchPoint = sender.location(in: mapView)
@@ -127,6 +145,30 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         pullUpView.addSubview(spinner!)
     }
     
+    func removeSpinner(){
+        if spinner != nil{
+            spinner?.removeFromSuperview()
+        }
+    }
+    
+    // MARK: - Add label
+    
+    func addProgressLabel(){
+        progressLabel = UILabel()
+        progressLabel?.frame = CGRect(x: (screenSize.width / 2) - 120, y: 175, width: 240, height: 40)
+        progressLabel?.font = UIFont(name: "Avenir Next", size: 18)
+        progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        progressLabel?.textAlignment = .center
+        progressLabel?.text = "12/40 PHOTOS LOADED"
+        collectionView?.addSubview(progressLabel!)
+    }
+    
+    func removeProgressLabel(){
+        if progressLabel != nil{
+            progressLabel?.removeFromSuperview()
+        }
+    }
+    
     // MARK: - Actions
     
     @IBAction func centerMapLocation(_ sender: Any) {
@@ -177,4 +219,48 @@ extension MapVC: CLLocationManagerDelegate{
         centerMapOnUserLocation()
     }
 }
+
+// MARK: - Collection View
+
+extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource{
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        //number of items in array
+        return 4
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell
+        return cell!
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

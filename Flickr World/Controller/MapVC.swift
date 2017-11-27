@@ -96,6 +96,8 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         //create annotation
         let annotation = DroppablePin(coordinate: touchCoordinate, identifier: "droppablePin")
         
+        print(flickrURL(forApiKey: API_KEY, withAnnotation: annotation, andNumberOfPhotos: 40))
+        
         //add annotation to mapView
         mapView.addAnnotation(annotation)
         

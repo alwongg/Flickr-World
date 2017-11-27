@@ -15,6 +15,7 @@
 		FA00B6671FCA024100E46A1E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA00B6651FCA024100E46A1E /* LaunchScreen.storyboard */; };
 		FA00B6741FCA256200E46A1E /* DroppablePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00B6731FCA256200E46A1E /* DroppablePin.swift */; };
 		FA00B6761FCA635700E46A1E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00B6751FCA635700E46A1E /* PhotoCell.swift */; };
+		FA00B6781FCAB15D00E46A1E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00B6771FCAB15D00E46A1E /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		FA00B6681FCA024100E46A1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA00B6731FCA256200E46A1E /* DroppablePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppablePin.swift; sourceTree = "<group>"; };
 		FA00B6751FCA635700E46A1E /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		FA00B6771FCAB15D00E46A1E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 		FA00B6721FCA032200E46A1E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				FA00B6771FCAB15D00E46A1E /* Constants.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA00B6781FCAB15D00E46A1E /* Constants.swift in Sources */,
 				FA00B6761FCA635700E46A1E /* PhotoCell.swift in Sources */,
 				FA00B65F1FCA024100E46A1E /* MapVC.swift in Sources */,
 				FA00B6741FCA256200E46A1E /* DroppablePin.swift in Sources */,

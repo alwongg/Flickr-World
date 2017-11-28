@@ -63,6 +63,10 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         collectionView?.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         pullUpView.addSubview(collectionView!)
+        
+        //peek and pop
+        
+        registerForPreviewing(with: self, sourceView: collectionView!)
     }
     
     // MARK: - DoubleTap
@@ -339,8 +343,6 @@ extension MapVC: UIViewControllerPreviewingDelegate{
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         show(viewControllerToCommit, sender: self)
     }
-    
-    
 }
 
 

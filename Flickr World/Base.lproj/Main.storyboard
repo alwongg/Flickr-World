@@ -14,6 +14,9 @@
         <array key="AvenirNext.ttc">
             <string>AvenirNext-DemiBold</string>
         </array>
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
     </customFonts>
     <scenes>
         <!--MapVC-->
@@ -97,6 +100,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hlQ-IM-rZc" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="585" y="-206"/>
+        </scene>
+        <!--PopVC-->
+        <scene sceneID="ZTK-wy-zEu">
+            <objects>
+                <viewController storyboardIdentifier="PopVC" id="34d-F8-uXg" customClass="PopVC" customModule="Flickr_World" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mjd-eM-tHi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3U1-bK-cH1">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="exJ-0D-UGk">
+                                <rect key="frame" x="87" y="622" width="200" height="25"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Double-tap to dismiss" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="euQ-Qx-xKS">
+                                        <rect key="frame" x="16" y="2" width="168" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="euQ-Qx-xKS" firstAttribute="centerY" secondItem="exJ-0D-UGk" secondAttribute="centerY" id="7Cv-RN-LB2"/>
+                                    <constraint firstAttribute="width" constant="200" id="MPr-ty-cwt"/>
+                                    <constraint firstItem="euQ-Qx-xKS" firstAttribute="centerX" secondItem="exJ-0D-UGk" secondAttribute="centerX" id="jHe-Bf-wxT"/>
+                                    <constraint firstAttribute="height" constant="25" id="uJb-JC-VIh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="3U1-bK-cH1" firstAttribute="top" secondItem="mjd-eM-tHi" secondAttribute="top" id="6ee-1u-X3M"/>
+                            <constraint firstItem="SXA-io-cFc" firstAttribute="bottom" secondItem="exJ-0D-UGk" secondAttribute="bottom" constant="20" id="Ots-oe-j5t"/>
+                            <constraint firstItem="exJ-0D-UGk" firstAttribute="centerX" secondItem="mjd-eM-tHi" secondAttribute="centerX" id="QYZ-pq-YFO"/>
+                            <constraint firstItem="3U1-bK-cH1" firstAttribute="leading" secondItem="SXA-io-cFc" secondAttribute="leading" id="ZeN-Kh-23Y"/>
+                            <constraint firstItem="3U1-bK-cH1" firstAttribute="trailing" secondItem="SXA-io-cFc" secondAttribute="trailing" id="mhX-Da-HIL"/>
+                            <constraint firstItem="3U1-bK-cH1" firstAttribute="bottom" secondItem="SXA-io-cFc" secondAttribute="bottom" id="moU-qR-NeV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="SXA-io-cFc"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="3U1-bK-cH1" id="IeZ-4M-wGp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2bS-d8-cUi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1376.8" y="-206.44677661169416"/>
         </scene>
     </scenes>
     <resources>

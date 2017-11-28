@@ -63,8 +63,6 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         collectionView?.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         pullUpView.addSubview(collectionView!)
-        
-        
     }
     
     // MARK: - DoubleTap
@@ -314,6 +312,12 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource{
         cell.addSubview(imageView)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let popVC = storyboard?.instantiateViewController(withIdentifier: "PopVC") as? PopVC else {return}
+        popVC.initData(forImage: imageArray[indexPath.row])
+        present(popVC, animated: true, completion: nil)
     }
 }
 

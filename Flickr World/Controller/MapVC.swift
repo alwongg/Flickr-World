@@ -60,9 +60,11 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         collectionView?.delegate = self
         collectionView?.dataSource = self
         
-        collectionView?.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        collectionView?.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         pullUpView.addSubview(collectionView!)
+        
+        
     }
     
     // MARK: - DoubleTap
@@ -79,6 +81,15 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func dropPin(sender: UITapGestureRecognizer){
+        
+        pullUpView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        cancelAllSessions()
+        
+        imageUrlArray = []
+        imageArray = []
+        
+        collectionView?.reloadData()
         
         //update UI
         animateViewUp()
@@ -123,6 +134,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
                         
                         self.removeSpinner()
                         self.removeProgressLabel()
+                        self.collectionView?.reloadData()
                     }
                 })
             }
@@ -151,6 +163,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func animateViewDown(){
+        cancelAllSessions()
         pullUpViewHeightConstraint.constant = 0
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -201,7 +214,6 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func retrieveUrls(forAnnotation annotation: DroppablePin, completion: @escaping CompletionHandler){
-        imageUrlArray = []
         
         Alamofire.request(flickrURL(forApiKey: API_KEY, withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
             guard let json = response.result.value as? Dictionary<String, AnyObject> else {return}
@@ -216,7 +228,6 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func retrieveImages(completion: @escaping CompletionHandler){
-        imageArray = []
         
         for url in imageUrlArray{
             Alamofire.request(url).responseImage(completionHandler: { (response) in
@@ -228,6 +239,13 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
                     completion(true)
                 }
             })
+        }
+    }
+    
+    func cancelAllSessions(){
+        Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { (sessionDataTask, uploadData, downloadData) in
+            sessionDataTask.forEach({$0.cancel()})
+            downloadData.forEach({$0.cancel()})
         }
     }
 }
@@ -284,13 +302,18 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //number of items in array
-        return 4
+        return imageArray.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell
-        return cell!
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell else {return UICollectionViewCell()}
         
+        let imageFromIndex = imageArray[indexPath.row]
+        let imageView = UIImageView(image: imageFromIndex)
+        
+        cell.addSubview(imageView)
+        
+        return cell
     }
 }
 

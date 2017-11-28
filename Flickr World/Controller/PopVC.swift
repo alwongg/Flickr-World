@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PopVC: UIViewController {
+class PopVC: UIViewController, UIGestureRecognizerDelegate {
 
     // MARK: - Outlets
     
@@ -28,5 +28,18 @@ class PopVC: UIViewController {
         super.viewDidLoad()
 
         imageView.image = passedImage
+        
+        addDoubleTap()
+    }
+    
+    func addDoubleTap(){
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(dismissPopVC))
+        doubleTap.numberOfTapsRequired = 2
+        doubleTap.delegate = self
+        view.addGestureRecognizer(doubleTap)
+    }
+    
+    @objc func dismissPopVC(){
+        dismiss(animated: true, completion: nil)
     }
 }

@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias CompletionHandler = (_ status: Bool) -> ()
+
 // MARK: - Flickr API
 
 let API_KEY = "04785954f464f228568d49fb889c2231"

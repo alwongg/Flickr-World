@@ -33,6 +33,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var flowLayout = UICollectionViewFlowLayout() //need for programmatic collectionview
     
     var imageUrlArray = [String]()
+    var imageArray = [UIImage]()
     
     // MARK: - View Lifecycle
     
@@ -111,8 +112,20 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         //add region to mapView
         mapView.setRegion(coordinateRegion, animated: true)
         
-        retrieveUrls(forAnnotation: annotation) { (success) in
-            print(self.imageUrlArray)
+        retrieveUrls(forAnnotation: annotation) { (finished) in
+//            print(self.imageUrlArray)
+            if finished {
+                self.retrieveImages(completion: { (success) in
+                    if success{
+                        //hide spinner
+                        //hide label
+                        //reload collectionview
+                        
+                        self.removeSpinner()
+                        self.removeProgressLabel()
+                    }
+                })
+            }
         }
     }
     
@@ -187,7 +200,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func retrieveUrls(forAnnotation annotation: DroppablePin, completion: @escaping (_ status: Bool) -> ()){
+    func retrieveUrls(forAnnotation annotation: DroppablePin, completion: @escaping CompletionHandler){
         imageUrlArray = []
         
         Alamofire.request(flickrURL(forApiKey: API_KEY, withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
@@ -195,10 +208,26 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
             let photosDictionary = json["photos"] as! Dictionary<String, AnyObject>
             let photosDictionaryArray = photosDictionary["photo"] as! [Dictionary<String, AnyObject>]
             for photo in photosDictionaryArray {
-                let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_k_d.jpg"
+                let postUrl = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!)_h_d.jpg"
                 self.imageUrlArray.append(postUrl)
             }
             completion(true)
+        }
+    }
+    
+    func retrieveImages(completion: @escaping CompletionHandler){
+        imageArray = []
+        
+        for url in imageUrlArray{
+            Alamofire.request(url).responseImage(completionHandler: { (response) in
+                guard let image = response.result.value else {return}
+                self.imageArray.append(image)
+                self.progressLabel?.text = "\(self.imageArray.count)/40 IMAGES DOWNLOADED"
+                
+                if self.imageArray.count == self.imageUrlArray.count{
+                    completion(true)
+                }
+            })
         }
     }
 }
